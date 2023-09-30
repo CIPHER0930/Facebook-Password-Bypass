@@ -12,10 +12,17 @@ This script is designed to recover a Facebook password using a cracked OTP and c
 This script is designed to recover a Facebook password using a cracked OTP and change the password.
 
 ## Usage
+git clone https://github.com/CIPHER0930/Facebook-Password-Bypass
 
+
+xargs -a requirements.txt sudo apt install
 
 ./Fb_otp_bypass.sh <email> <phone_number> <new_password>
 
+       ####OR####
+       
+bash Fb_otp_bypass.sh <email><phone_number> <new_password>
+ 
 - <email>: The email address associated with the Facebook account.
 - <phone_number>: The phone number associated with the Facebook account.
 - <new_password>: The new password to set for the Facebook account.
