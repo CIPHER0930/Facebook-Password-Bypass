@@ -30,7 +30,7 @@ bash Fb_otp_bypass.sh <email><phone_number> <new_password>
 ## Example
 
 
-./Fb_otp_bypass.sh richmondrichmond183@gmail.com +237653712744 newpassword123
+./Fb_otp_bypass.sh richmondrichmond888@gmail.com +237653772744 newpassword123
 
 ## Notes
 
