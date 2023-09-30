@@ -1,0 +1,26 @@
+bash
+curl
+echo
+read
+grep
+sleep
+
+#To run the script, you need several Linux commands and utilities available on your system. Here's a list of the commands that are required:
+
+#1. `bash`: The script itself is a Bash script, so you need the `bash` command to interpret and execute it.
+
+#2. `curl`: The script uses the `curl` command to send HTTP requests to the Facebook API. Ensure that you have the `curl` command-line tool installed on your system to run the script and perform the necessary HTTP requests.
+
+#3. `echo`: The `echo` command is used to display messages and prompts to the user.
+
+#4. `read`: The `read` command is used to read input from the user, such as the OTP and response to yes/no questions.
+
+#5. `grep`: The `grep` command is used to search for specific patterns or strings in text output. In the script, `grep` is used to extract cookies and match specific success messages.
+
+#6. `sleep`: The `sleep` command is used to introduce a delay/wait in the script. It is used to handle rate limiting by pausing execution for 60 seconds before retrying.
+
+#Make sure these commands are available in your Linux environment. To check if a particular command is available, you can run `<command> --version` or `<command> --help` in your terminal/command prompt.
+
+#If any of these commands are missing or not installed, you can typically install them using your system's package manager (e.g., `apt`, `yum`, `dnf`, `zypper`) or by downloading/installing them individually from the respective project's website or repository.
+
+#Remember to also ensure that you have appropriate permissions to execute the script file (`recover-facebook-password.sh`) and that you have provided valid input in the correct format when executing the script.
