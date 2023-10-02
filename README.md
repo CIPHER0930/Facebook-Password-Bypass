@@ -17,11 +17,19 @@ git clone https://github.com/CIPHER0930/Facebook-Password-Bypass
 
 xargs -a requirements.txt sudo apt install
 
-./Fb_otp_bypass.sh <email> <phone_number> <new_password>
-
+#using an email for password reset.
+./Fb_otp_bypass.sh <email>  <new_password>
+#using a phonenumber for the password reset
+./Fb_otp_bypass.sh <phone number> <newpassword>
        ####OR####
-       
-bash Fb_otp_bypass.sh <email><phone_number> <new_password>
+ #phone number      
+bash Fb_otp_bypass.sh <phone_number> <new_password>
+
+ 
+ #email
+bash Fb_otp_bypass.sh <email address> <new_password>
+ 
+
  
 - <email>: The email address associated with the Facebook account.
 - <phone_number>: The phone number associated with the Facebook account.
