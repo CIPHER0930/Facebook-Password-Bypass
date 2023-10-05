@@ -58,3 +58,7 @@ bash Fb_otp_bypass.sh <emailaddress> <new_password>
 ---
 
 Please remember to use this script responsibly and within legal and ethical boundaries. If you're having trouble accessing your Facebook account, I recommend reaching out to Facebook Support for assistance.
+
+License: MIT
+
+Author: SHIELD
