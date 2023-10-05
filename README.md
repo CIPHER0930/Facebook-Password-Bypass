@@ -20,18 +20,23 @@ xargs -a requirements.txt sudo apt install
 #using an email for password reset.
 ./Fb_otp_bypass.sh <email>  <new_password>
   OR
+
 python3 Fb_otp_bypass.py <email>  <new_password>
+
 #using a phonenumber for the password reset
-./Fb_otp_bypass.sh <phone number> <newpassword>
+
+./Fb_otp_bypass.sh <phonenumber> <newpassword>
+
 OR
 python Fb_otp_bypass.py <email>  <new_password>
        ####OR####
- #phone number      
+
+ #phone number  using a phonenumber for the password reset    
 bash Fb_otp_bypass.sh <phone_number> <new_password>
 
  
- #email
-bash Fb_otp_bypass.sh <email address> <new_password>
+ #email using an email for the password reset
+bash Fb_otp_bypass.sh <emailaddress> <new_password>
  
 
  
